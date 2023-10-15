@@ -1,15 +1,18 @@
 package com.roblib;
 
 import java.awt.image.BufferedImage;
+import java.lang.invoke.TypeDescriptor;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
-public class Database {
+public class Database  {
 
-        private static final String DB_URL = "jdbc:mysql://localhost:3306/roblib";
-        private static final String DB_USER = "root";
-        private static final String DB_PASSWORD = "root";
+    private static final String DB_URL = "jdbc:mysql://sql9.freesqldatabase.com:3306/sql9653493";
+    private static final String DB_USER = "sql9653493";
+        private static final String DB_PASSWORD = "r9Ru9Pfqcc";
+
+
     public class UserRegistrationException extends Exception {
         public UserRegistrationException(String message) {
             super(message);
@@ -17,7 +20,12 @@ public class Database {
     }
 
     public void saveUser(String username, String password, String email, String gender, String birthdate, String cin, String imgPath) {
-        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
+
+
+
+        try  {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
             String sql = "INSERT INTO users (username, password, email, gender, birthdate, cin, imgPath) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, username);
@@ -28,12 +36,14 @@ public class Database {
             pstmt.setString(6, cin);
             pstmt.setString(7, imgPath);
             pstmt.executeUpdate();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
     public void saveUserWithExceptionHandling(String username, String password, String email, String gender, String birthdate, String cin, String imagePath) throws UserRegistrationException {
-        try (Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD)) {
+        try  {
+            Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+            Class.forName("com.mysql.cj.jdbc.Driver");
             String sql = "INSERT INTO users (username, password, email, gender, birthdate, cin, imgPath) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, username);

@@ -17,7 +17,7 @@ public class LoginFrame extends JFrame {
     private RoundedPasswordField passwordField;
     public LoginFrame() {
         page = 0;
-        int width = 1960;
+        int width = 1920;
         int height = 1080;
         setTitle("ROBLIB");
         setSize(width, height);
@@ -169,11 +169,13 @@ public class LoginFrame extends JFrame {
 
     private boolean authenticateUser(String username, String password) {
         // Replace these with your database connection details.
-        String dbUrl = "jdbc:mysql://localhost:3306/roblib";
-        String dbUser = "root";
-        String dbPassword = "root";
+        String dbUrl = "jdbc:mysql://sql9.freesqldatabase.com:3306/sql9653493";
+        String dbUser = "sql9653493";
+        String dbPassword = "r9Ru9Pfqcc";
 
-        try (Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword)) {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection conn = DriverManager.getConnection(dbUrl, dbUser, dbPassword);
             String sql = "SELECT password FROM users WHERE username = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, username);
@@ -189,6 +191,8 @@ public class LoginFrame extends JFrame {
             }
         } catch (SQLException e) {
             e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
         }
         return false;
     }
